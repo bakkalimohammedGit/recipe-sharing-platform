@@ -29,7 +29,7 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // This keeps the auth session in sync for server-rendered routes.
+  // Keep auth session in sync for server-rendered routes.
   await supabase.auth.getUser();
 
   return response;

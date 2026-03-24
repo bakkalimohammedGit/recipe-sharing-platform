@@ -29,8 +29,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - Browser Supabase client: `lib/supabase/client.ts`
 - Server Supabase client: `lib/supabase/server.ts`
-- Auth session middleware helper: `lib/supabase/middleware.ts`
-- Next.js middleware entry: `middleware.ts`
+- Auth session proxy helper: `lib/supabase/proxy.ts`
+- Next.js proxy entry: `proxy.ts`
 - Supabase table typings: `types/database.ts`
 
 ## Usage examples
