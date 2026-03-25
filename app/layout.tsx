@@ -26,10 +26,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Avoid rendering failures if env vars are missing on the hosting platform.
+  // This prevents the whole site from returning 404 when Supabase isn't reachable.
+  let user: { id: string; email?: string } | null = null;
+  try {
+    const supabase = await createClient();
+    const result = await supabase.auth.getUser();
+    user = result.data.user
+      ? { id: result.data.user.id, email: result.data.user.email ?? undefined }
+      : null;
+  } catch {
+    user = null;
+  }
 
   return (
     <html lang="en">

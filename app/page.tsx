@@ -1,12 +1,22 @@
 import { createClient } from "@/lib/supabase/server";
 
 export default async function Home() {
-  const supabase = await createClient();
-  const { count, error } = await supabase
-    .from("recipes")
-    .select("id", { count: "exact", head: true });
+  let supabaseStatus: "connected" | "error" = "error";
+  let count: number | null = null;
+  let error: { message: string } | null = null;
 
-  const supabaseStatus = error ? "error" : "connected";
+  try {
+    const supabase = await createClient();
+    const result = await supabase
+      .from("recipes")
+      .select("id", { count: "exact", head: true });
+    count = result.count ?? null;
+    error = result.error ? { message: result.error.message } : null;
+    supabaseStatus = result.error ? "error" : "connected";
+  } catch (e) {
+    error = e instanceof Error ? { message: e.message } : { message: "Unknown error" };
+    supabaseStatus = "error";
+  }
 
   return (
     <div className="grid gap-10 md:grid-cols-2 md:items-center">
